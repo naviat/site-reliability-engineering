@@ -14,7 +14,7 @@
 - We also provide a description of Google's production environment and a mapping of our internal software and OSS software,
 - Smaller organizations may be wondering how to fully utilize the experiences written here, but as with security, earlier it is better to care abount reliability. It is not costly to introduce and extend it first,  reather rthan introduce it from stratch later.
 - Regardless of the size of the organization, even if it's not called SRE, there should already be someone who is working for SRE.
-- From the historical poinnt of the view ==> **WHO is the FIRST SRE?**
+- From the historical point of the view ==> **WHO is the FIRST SRE?**
 	- Margaret Hamilton who has engaged in the Apollo project.
 	- "part of the culture was to learn from everyone and everything, including from that which one would least expect"
 - Margaret said: "a thorough understanding of how to operate the systems was not enough to prevent human errors".
