@@ -1,4 +1,4 @@
-# Reading Site Reliability engineering from Google
+# Reading Site Reliability Engineering from Google
 ---------------------
 
 [Site Reliability Engineering - How Google Runs Production Systems](http://shop.oreilly.com/product/0636920041528.do)
