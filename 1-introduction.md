@@ -72,4 +72,27 @@
 - Ideal to recover automatically without skipping alerts
 - There are three output as monitoring output: alerts, tickets, logging.
 
-##### 
+##### Change management
+
+- A major failure of 70% is caused by change
+- At the time of change, it is possible to reduce the persons involved in operation by the Implementing progressive rollout and the early detection of the problem and the automatic roll back of the change
+
+##### Demand forecast and capacity planning
+
+- Capacity planning has a natural increase and a non-natural increase due to events and additions of functions, and we think to be able to deal with them
+- Think about lead time.
+- Add non-natural demand increase to predict natural increase.
+- Test the system.
+- SRE will be in charge of capacity planning naturally in order to secure occupancy rate. This also represents that you are in charge of provisioning n
+
+
+#### Provisioning
+
+- Provisioning is part of the capacity planning. Even if you buy a server it will be meaningless if you can not enter by provisioning n
+- Efficient use of resources is extremely important.
+- Service slowdown is equivalent to reduction in capacity.
+- Monitor and change the service to increase performance.
+
+#### The End of the Beginning
+
+- SRE is different from the traditional way of maintaining a large service.
