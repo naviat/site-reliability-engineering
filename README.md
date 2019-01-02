@@ -3,6 +3,8 @@
 
 [Site Reliability Engineering - How Google Runs Production Systems](http://shop.oreilly.com/product/0636920041528.do)
 
+[Jekyll version](https://naviat.github.io/site-reliability-engineering/)
+
 ## References
 
 - https://landing.google.com/sre/
