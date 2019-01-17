@@ -98,3 +98,58 @@
 - By doing this you can correct problems outside of the project and send a pull erquestian (changelist or CL)
 - Even for engineers themselves, reviews are necessary. All software is reviewed by a single repository
 
+#### Shakespeare: A Sample Service
+
+- To illustrate how services are deployed to the production environment, imagine and rate a service
+
+- We revise that making a service will tell if a word is included in the sentences written by Shakespeare
+
+- For that purpose we split it into the following two subsystems
+
+    - Read Shakespeare's document, create index and write index into Bigtable batch
+        - It is executed one or more times
+- Application front end handling requests from end users
+
+    - Access comes from people all over the world. I need to keep moving constantly
+- batch 3 phases
+
+    - Map reads Shakespeare sentences and divides it into each word (earlier by parallel execution)
+    - shuffle phase sorts words (and pairs of their place of occurrence)
+    - You can create a list that combines all of the above with reduce
+    - Each pair is stored in Bigtable
+
+##### Life of a Request
+
+- The browser accesses shakespeare.google.com
+
+- Access Google's DNS
+
+    - DNS back access GSLB
+- The browser accesses the TCP's reverse proxy (GFE)
+
+    - GFE is a Google-customized Apache
+- GFE decides which service is required and sends HTML request with RPC to Shakespeare front end
+
+- Shakespeare frontend tries to make a protobuf containing the word you want to find and throw it to the backend
+
+    - Here we use BNS to access available backend servers via GSLB
+    - backend requests to BigTable with protobuf
+    - The backend that got it returns a response to frontend. From there HTML is returned to the user
+    - The above is done within less than 100 milliseconds
+
+- There are lots of potential failure points as there are lots of moving parts involved. Especially the GSLB can cause great damage
+
+- However, we have been able to provide reliable services by prior error development methods such as Google's rigorous testing and careful launch, plus graceful degeneracy
+
+- The more you verify that users can connect to www.google.com to check Internet connectivity
+
+##### Job and Data Organization
+
+- The backend scores 100 QPS
+- If the expected QPS of the peak is 3470 QPS, it seems that 35 tasks are necessary, but considering a little more, it is actually 37 task necessary for the following reasons
+    - 1 task becomes unavailable during update (deploys)
+    - If machine death occurs during the above task update, another task can not be used anymore
+- This idea of ​​N + 2 can also be used to distribute tasks for each region in the worldwide deployment.
+- In the case of worldwide deployment, we will deploy the necessary tasks for each region, but if the task runs short, it will be possible to continue the service with high latency by passing traffic to another region
+- Within a large region, put task in multiple clusters to make it more resilient
+- Multiple regions When distributing, BigTable is replicated to multiple regions to lower latency and recover when something happens. Although BigTable supports result consistency, contents are not updated so much so there is no problem
