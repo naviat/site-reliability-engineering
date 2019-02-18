@@ -201,3 +201,82 @@
     - In order to maximize throughput, the BigTable should not be idle while waiting for the next request
 - With such a feeling, obstacles? Definition differs depending on user set
     - A user's desire for low latency? Becomes an obstacle to users desiring offline analysis
+    
+###### cost
+
+- A way to fulfill conflicting constraints in a cost-effective way
+    - Split the infrastructure and provide it at multiple independent levels
+    - In the example of BigTable, low latency cluster and throughput cluster
+        - A low latency cluster is designed to be operated and used for services requiring low latency and high reliability
+            - It is provisioned with considerable leeway to guarantee the short queue length and reduce conflicts and increase redundancy to meet strict client isolation requirements
+        - Throughput clusters optimize throughput for latency, always operate and provision low redundancy
+            - In fact, the cost to fulfill this requirement seems to be low, the former 10% - 50% cost
+        - In the scale of BigTable, this cost reduction width appears conspicuously
+- The key strategy of the infrastructure is to clearly distinguish the levels and provide services
+    -  Clients can find a compromise between risk and cost (images like when they use AWS)
+    - By explicitly dividing the level of service, infrastructure providers can externalize the costs necessary to service a level of clients
+        - Motivation for clients to select the level of service at the lowest cost to satisfy their needs
+    - In the case of Google+,
+        - Important data such as user privacy concerns placed in a highly available worldwide consistent data store
+        -  Supplementary data that enhances the user experience may be placed on a cheap and less reliable data store
+- Note that the story so far is realized using the same software and hardware
+    - Various service guarantees can be provided by adjusting the characteristics of various services
+        - Characteristics include resource volume, redundancy, geographical provisioning constraints, infrastructure software configuration
+   
+##### Motivation for error budget
+
+- In other chapters of the book we are discussing how tension between the product development team and the SRE team occurs
+    - Teams are evaluated with different metrics
+        - Development team will be evaluated at development speed
+        - The SRE team is evaluated with reliability
+    - Asymmetry of information between teams amplifies tension
+        - The development team is focused on writing code and releasing it
+        - The SRE team is looking at the reliability of the service and the state of the product
+- Typical examples of tension
+    - Fault tolerance of software
+        - How to endure the software against unexpected events
+            - If it is too weak it is too brittle to use
+            - Those that no one wants to use if it is too strong (there is stability)
+- test
+    - If it is too little, it will be embarrassing to stop functioning and leakage of personal information
+    - Too much will miss the market
+- Frequency of push
+    - All push is dangerous. How to tackle to reduce risk or do other work
+- Canary duration and size
+    - Testing a new release with a subset of typical workload is called canarying
+    - How long to wait, how big is the canary (size of the subset)
+- Approach to team asymmetry
+    - It seems to be where the boundary between risk and labor exists
+    - It is difficult to prove that the balance is optimal
+        - It simply becomes a problem of the negotiation skills of the involved engineers
+    - Such decisions should not be made by politics, fear or hope
+- The ultimate goal is to determine the objective metrics with the agreement of both teams
+    - By doing this you will be able to reproduce negotiations
+    - "Data based decisions are good"
+    
+###### Form an error budget
+
+- In order to make decisions based on objective data, both teams need to cooperate and define quarterly error budget based on SLO
+    -  Error budget is a clear metric showing how unstable the service during the quarter
+- Practice
+    - Define SLO (product seems to be written in Chapter 4). SLO determines how much service (uptime) is running every quarter
+    - uptime is measured by a neutral third party (it seems to be a monitoring system)
+    - The difference between these two numbers is an error budget
+    - New functions will be released if uptime is above SLO
+
+###### advantage
+
+- The primary advantage of error budgeting is to provide a common incentive for the development team and the SRE team
+    - This allows us to find an appropriate balance between innovation and reliability
+- It is used to adjust the release speed
+    - I hope I fulfilled the SLO
+    - Release as long as you need to expand the error budget, or if you infringe the SLO or you submit additional resources
+    - Even if you do not stop releasing completely, there is also a way to slow down the release or rewind to the point where the error budget recovers
+- For example, if the development team omits the test and wishes to speed up the release cycle, if the SRE team can afford, the error budget is an indicator
+    - If the error budget is large, it should be issued, and if it is small, the development team should take time to test or slow down the cycle
+    - The development team will be able to autonomously. Because we can recognize and manage risks thanks to the error budget.
+- In case of network trouble or something?
+    - It can also be charged
+    - Everyone is responsible for uptime
+- Error budget also helps to emphasize the cost of excessively high reliability goals
+    - In such a case, lower the SLO
