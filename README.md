@@ -1,9 +1,12 @@
-# Reading Site Reliability Engineering from Google
+Reading Site Reliability Engineering from Google
 ---------------------
 
 [Site Reliability Engineering - How Google Runs Production Systems](http://shop.oreilly.com/product/0636920041528.do)
 
 [Jekyll version](https://naviat.github.io/site-reliability-engineering/)
+
+## Content 
+[Preface](https://github.com/naviat/site-reliability-engineering/blob/master/0-Preface.md)
 
 ## References
 
